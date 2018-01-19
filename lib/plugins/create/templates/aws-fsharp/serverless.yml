@@ -30,18 +30,12 @@ provider:
 #    - Effect: "Allow"
 #      Action:
 #        - "s3:ListBucket"
-#      Resource: { "Fn::Join" : ["", ["arn:", { "Ref" : "AWS::Partition" }, ":s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
+#      Resource: { "Fn::GetAtt": [ServerlessDeploymentBucket, Arn] }
 #    - Effect: "Allow"
 #      Action:
 #        - "s3:PutObject"
 #      Resource:
-#        Fn::Join:
-#          - ""
-#          - - "arn:"
-#            - "Ref" : "AWS::Partition"
-#            - ":s3:::"
-#            - "Ref" : "ServerlessDeploymentBucket"
-#            - "/*"
+#        Fn::Join: ['', [Fn::GetAtt: [ServerlessDeploymentBucket, Arn], '/*']]
 
 # you can define service wide environment variables here
 #  environment:
@@ -68,7 +62,7 @@ functions:
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)
 #      - sns: greeter-topic
-#      - stream: arn:${AWS::Partition}:dynamodb:region:XXXXXX:table/foo/stream/1970-01-01T00:00:00.000
+#      - stream: { Fn::Join: [':', 'arn', {Ref: AWS::Partition}, 'dynamodb:region:XXXXXX:table/foo/stream/1970-01-01T00:00:00.000']}
 #      - alexaSkill
 #      - alexaSmartHome: amzn1.ask.skill.xx-xx-xx-xx
 #      - iot:

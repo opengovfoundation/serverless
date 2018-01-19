@@ -30,16 +30,12 @@ provider:
 #    - Effect: "Allow"
 #      Action:
 #        - "s3:ListBucket"
-#      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
+#      Resource: { "Fn::GetAtt": [ServerlessDeploymentBucket, Arn] }
 #    - Effect: "Allow"
 #      Action:
 #        - "s3:PutObject"
 #      Resource:
-#        Fn::Join:
-#          - ""
-#          - - "arn:aws:s3:::"
-#            - "Ref" : "ServerlessDeploymentBucket"
-#            - "/*"
+#        Fn::Join: ['', [Fn::GetAtt: [ServerlessDeploymentBucket, Arn], '/*']]
 
 # you can define service wide environment variables here
 #  environment:
